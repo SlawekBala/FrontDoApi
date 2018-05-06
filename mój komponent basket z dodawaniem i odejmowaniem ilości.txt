@@ -1,0 +1,64 @@
+<template>
+
+    <v-data-table
+            :headers="headers"
+            :items="$store.state.added"
+            hide-actions
+            class="elevation-1"
+    >
+        <template slot="items" slot-scope="props">
+            <td>{{ props.item.id }}</td>
+            <td class="text-xs-right">{{ props.item.product_id }}</td>
+            <td>
+                <v-btn @click="change(props.item.id, 1)" fab dark small color="success">
+                    <v-icon dark>add</v-icon>
+                </v-btn>
+            </td>
+            <td>
+                <v-btn @click="change(props.item.id, 0)" fab dark small color="primary">
+                    <v-icon dark>remove</v-icon>
+                </v-btn>
+            </td>
+            <td class="text-xs-right">{{ props.item.quantity }}</td>
+
+        </template>
+    </v-data-table>
+
+</template>
+
+<script>
+
+    export default {
+        name: 'Basket',
+        data () {
+            return {
+                headers: [
+                    {
+                        text: 'Id',
+                        align: 'left',
+                        sortable: false,
+                        value: 'id'
+                    },
+                    {text: 'Produkt_id', value: 'product_id'},
+                    {text: '+', value: 'add'},
+                    {text: '-', value: 'delete'},
+                    {text: 'ilosc', value: 'quantity'}
+                ]
+            }
+
+        },
+        methods: {
+            
+            //id przy dodawaniu, value przy odejmowaniu
+            change (id, value) {
+                axios.put(`orders/quantity/${id}/${value}`)
+                    .then(result => {
+
+                        console.log(result.data)
+
+                        })
+                    }
+            }
+
+    }
+</script>
